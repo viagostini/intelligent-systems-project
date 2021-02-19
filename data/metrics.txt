@@ -1,0 +1,12 @@
+                    precision    recall  f1-score   support
+
+              Bebê       0.93      0.91      0.92      1780
+Bijuterias e Jóias       0.97      0.95      0.96       229
+         Decoração       0.91      0.92      0.91      2145
+     Lembrancinhas       0.93      0.94      0.94      4381
+            Outros       0.83      0.72      0.77       280
+       Papel e Cia       0.83      0.81      0.82       685
+
+          accuracy                           0.91      9500
+         macro avg       0.90      0.88      0.89      9500
+      weighted avg       0.91      0.91      0.91      9500

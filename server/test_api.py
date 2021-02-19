@@ -1,14 +1,20 @@
 import json
+import os
 
 import pytest
-from api import app
+from dotenv import load_dotenv
 from fastapi.testclient import TestClient
+
+from api import app
+
+if os.environ.get("COMPOSE_PROJECT_NAME") is None:
+    load_dotenv(".env.local")
 
 client = TestClient(app)
 
 
 def test_categorize():
-    with open("/usr/src/data/test_products.json", "r") as json_file:
+    with open(os.environ["TEST_PRODUCTS_PATH"], "r") as json_file:
         data = json.load(json_file)
 
     response = client.post("/v1/categorize", json=data)

@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   autoflake:
-    runs-on: ubuntu:20.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
@@ -20,7 +20,7 @@ jobs:
         run: autoflake server/*.py
 
   isort:
-    runs-on: ubuntu:20.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
@@ -36,7 +36,7 @@ jobs:
         run: isort server
 
   black:
-    runs-on: ubuntu:20.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
@@ -53,7 +53,7 @@ jobs:
 
 
   pytest:
-    runs-on: ubuntu:20.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 

@@ -1,12 +1,10 @@
 import json
-import os
 
 import cloudpickle
-from dotenv import load_dotenv
 from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 
-from models import Predictions, ProductList
+from models import Environment, Predictions, ProductList
 from monitoring import instrumentator
 
 app = FastAPI()
@@ -23,12 +21,10 @@ app.add_middleware(
 instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
 
 
-if os.environ.get("COMPOSE_PROJECT_NAME") is None:
-    load_dotenv(".env.local")
+env = Environment()
 
 
-MODEL_PATH = os.environ["MODEL_PATH"]
-with open(MODEL_PATH, "rb") as model_file:
+with open(env.model_path, "rb") as model_file:
     model = cloudpickle.load(model_file)
 
 

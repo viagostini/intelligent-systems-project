@@ -1,14 +1,18 @@
-import json
 from typing import Callable
 
 from prometheus_client import Counter
 from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from prometheus_fastapi_instrumentator.metrics import Info
 
+from models import Predictions
+
+# this will be imported in api.py to enable instrumentation
 instrumentator = Instrumentator()
 
 
 def product_classifier_output() -> Callable[[Info], None]:
+    """Custom metric to count predicted categories"""
+
     METRIC = Counter(
         "product_classifier_output",
         "Number of times a category has been predicted.",
@@ -17,11 +21,12 @@ def product_classifier_output() -> Callable[[Info], None]:
 
     def instrumentation(info: Info) -> None:
         if info.modified_handler == "/v1/categorize":
-            if info.response:
-                predictions = info.response.headers.get("X-predictions")
-                if predictions:
-                    for category in json.loads(predictions)["categories"]:
-                        METRIC.labels(category).inc()
+            if info.response and "X-predictions" in info.response.headers:
+                predictions = Predictions.parse_raw(
+                    info.response.headers["X-predictions"]
+                )
+                for category in predictions.categories:
+                    METRIC.labels(category).inc()
 
     return instrumentation
 

@@ -19,10 +19,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# enables instrumentation for Prometheus
 instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
+
 
 if os.environ.get("COMPOSE_PROJECT_NAME") is None:
     load_dotenv(".env.local")
+
 
 MODEL_PATH = os.environ["MODEL_PATH"]
 with open(MODEL_PATH, "rb") as model_file:

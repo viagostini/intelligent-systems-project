@@ -1,3 +1,5 @@
+![tests](https://github.com/viagostini/intelligent-systems-project/actions/workflows/tests.yml/badge.svg)
+
 # Development of Intelligent Computer Systems
 
 Project for the course "Development of Intelligent Computer Systems" at IME-USP.

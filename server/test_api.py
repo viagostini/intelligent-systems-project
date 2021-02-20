@@ -1,3 +1,4 @@
+import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
@@ -8,14 +9,26 @@ env = Environment()
 client = TestClient(app)
 
 
-def test_categorize():
-    data = ProductList.parse_file(env.test_products_path)
+@pytest.fixture
+def sample_products():
+    return ProductList.parse_file(env.test_products_path)
 
-    response = client.post("/v1/categorize", json=data.dict())
+
+def test_productlist_to_dataframe(sample_products: ProductList):
+    product_df = sample_products.to_dataframe()
+
+    assert type(product_df) == pd.DataFrame
+    assert "title" in product_df.columns
+    assert "concatenated_tags" in product_df.columns
+    assert product_df.shape == (len(sample_products.products), 2)
+
+
+def test_categorize(sample_products: ProductList):
+    response = client.post("/v1/categorize", json=sample_products.dict())
 
     assert response.status_code == 200
     assert "categories" in response.json()
-    assert len(response.json()["categories"]) == len(data.products)
+    assert len(response.json()["categories"]) == len(sample_products.products)
 
 
 @pytest.mark.parametrize(

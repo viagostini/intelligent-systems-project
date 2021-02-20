@@ -6,11 +6,34 @@ services:
       context: "."
       target: "development"
       args:
-        USER_ID: "${USER_ID:-1000}"
-        GROUP_ID: "${GROUP_ID:-1000}"
+        USER_ID: "${USER_ID:-1001}"
+        GROUP_ID: "${GROUP_ID:-1001}"
     ports:
       - "5000:5000"
     volumes:
       - ".:/usr/src/api"
       - "../data:/usr/src/data"
+      - "../setup.cfg:/usr/src/api/setup.cfg"
     env_file: ".env"
+  
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    command: --config.file=/etc/prometheus/prometheus.yaml
+    volumes:
+      - ../prometheus.yaml:/etc/prometheus/prometheus.yaml
+    depends_on:
+      - api
+  
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_BASIC_ENABLED=false
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    depends_on:
+      - prometheus

@@ -2,27 +2,16 @@ import json
 
 import cloudpickle
 from fastapi import FastAPI, Response
-from fastapi.middleware.cors import CORSMiddleware
 
 from models import Environment, Predictions, ProductList
 from monitoring import instrumentator
 
-app = FastAPI()
+env = Environment()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = FastAPI()
 
 # enables instrumentation for Prometheus
 instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
-
-
-env = Environment()
-
 
 with open(env.model_path, "rb") as model_file:
     model = cloudpickle.load(model_file)

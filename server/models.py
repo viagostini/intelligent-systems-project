@@ -22,7 +22,7 @@ class Product(BaseModel):
 class ProductList(BaseModel):
     products: List[Product]
 
-    def to_dataframe(self) -> pd.DataFrame:
+    def dataframe(self) -> pd.DataFrame:
         return pd.DataFrame(self.dict()["products"])
 
 

@@ -15,7 +15,7 @@ def sample_products():
 
 
 def test_productlist_to_dataframe(sample_products: ProductList):
-    product_df = sample_products.to_dataframe()
+    product_df = sample_products.dataframe()
 
     assert type(product_df) == pd.DataFrame
     assert "title" in product_df.columns

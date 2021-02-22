@@ -31,6 +31,14 @@ def product_classifier_output() -> Callable[[Info], None]:
     return instrumentation
 
 
+instrumentator.add(
+    metrics.request_size(
+        should_include_handler=True,
+        should_include_method=True,
+        should_include_status=True,
+    )
+)
+
 instrumentator.add(metrics.latency(buckets=(1, 2, 3)))
 
 instrumentator.add(

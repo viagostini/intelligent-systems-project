@@ -2,8 +2,8 @@ import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
-from api import app
-from models import Environment, ProductList
+from app.api import app
+from app.schemas import Environment, ProductList
 
 env = Environment()
 

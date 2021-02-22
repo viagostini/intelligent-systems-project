@@ -13,7 +13,6 @@ services:
     volumes:
       - ".:/usr/src/api"
       - "../data:/usr/src/data"
-      - "../setup.cfg:/usr/src/api/setup.cfg"
     env_file: ".env"
   
   prometheus:

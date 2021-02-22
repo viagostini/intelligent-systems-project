@@ -6,7 +6,8 @@ ARG USER_ID=1001
 ARG GROUP_ID=1001
 
 # Environment variables to configure FastAPI
-ENV API_HOST="0.0.0.0" \
+ENV PYTHONPATH="/usr/src/api" \
+    API_HOST="0.0.0.0" \
     API_PORT="5000" \
     API_GROUP="fastapi" \
     API_USER="fastapi" \
@@ -18,15 +19,15 @@ ENV API_HOST="0.0.0.0" \
 WORKDIR ${API_DIR}
 
 # Install Debian Slim packages
-ADD packages.txt .
+COPY packages.txt .
 RUN apt-get update -y -qq && xargs -ra packages.txt apt-get install -y -qq
 
 # Install Python packages
-ADD requirements.txt .
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Add all other files to the container
-ADD . .
+COPY . .
 
 # Create non-root user fastapi and give appropriate permissions
 RUN groupadd -g ${GROUP_ID} ${API_GROUP} \
@@ -40,4 +41,4 @@ USER ${USER_ID}:${GROUP_ID}
 EXPOSE ${API_PORT}
 
 # By default, execute FastAPI
-CMD uvicorn api:app --host ${API_HOST} --port ${API_PORT} --reload
+CMD uvicorn app.api:app --host ${API_HOST} --port ${API_PORT} --reload

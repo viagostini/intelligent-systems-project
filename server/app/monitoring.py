@@ -4,7 +4,7 @@ from prometheus_client import Counter
 from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from prometheus_fastapi_instrumentator.metrics import Info
 
-from models import Predictions
+from app.schemas import Predictions
 
 # this will be imported in api.py to enable instrumentation
 instrumentator = Instrumentator()

@@ -3,8 +3,8 @@ import json
 import cloudpickle
 from fastapi import FastAPI, Response
 
-from models import Environment, Predictions, ProductList
-from monitoring import instrumentator
+from app.monitoring import instrumentator
+from app.schemas import Environment, Predictions, ProductList
 
 env = Environment()
 
@@ -12,6 +12,7 @@ app = FastAPI()
 
 # enables instrumentation for Prometheus
 instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
+
 
 with open(env.model_path, "rb") as model_file:
     model = cloudpickle.load(model_file)

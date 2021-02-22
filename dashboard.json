@@ -92,7 +92,7 @@
                 }
             ],
             "spaceLength": 10,
-            "stack": true,
+            "stack": false,
             "steppedLine": false,
             "targets": [
                 {
@@ -328,7 +328,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(rate(product_classifier_output_total[30m]))\n/ ignoring(category) group_left\nsum without (category, categories)(rate(product_classifier_output_total[30m])) * 100",
+                    "expr": "(rate(product_classifier_output_total[10m]))\n/ ignoring(category) group_left\nsum without (category, categories)(rate(product_classifier_output_total[10m])) * 100",
                     "hide": false,
                     "interval": "",
                     "legendFormat": "{{ category }}",
@@ -339,7 +339,7 @@
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "Prediction Categories (30m avg)",
+            "title": "Prediction Categories (10m avg)",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -384,7 +384,8 @@
             "datasource": "Prometheus",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "unit": "deckbytes"
                 },
                 "overrides": []
             },
@@ -427,7 +428,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "histogram_quantile(0.9, rate(http_request_duration_seconds_bucket{handler!=\"none\"}[30s]))",
+                    "expr": "sum(rate(http_request_size_bytes_sum{handler=\"/v1/categorize\"}[1m])) / sum(rate(http_request_size_bytes_count{handler=\"/v1/categorize\"}[1m]))",
                     "format": "time_series",
                     "interval": "",
                     "intervalFactor": 1,
@@ -448,7 +449,7 @@
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "Request duration [s] - p90",
+            "title": "Request size",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -464,7 +465,7 @@
             },
             "yaxes": [
                 {
-                    "format": "clocks",
+                    "format": "deckbytes",
                     "label": null,
                     "logBase": 1,
                     "max": null,
@@ -808,7 +809,7 @@
         "list": []
     },
     "time": {
-        "from": "now-30m",
+        "from": "now-15m",
         "to": "now"
     },
     "timepicker": {
@@ -828,5 +829,5 @@
     "timezone": "",
     "title": "Categorization Model Dashboard",
     "uid": "elo7",
-    "version": 2
+    "version": 3
 }

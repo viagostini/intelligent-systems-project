@@ -30,7 +30,7 @@ with open(env.model_path, "rb") as model_file:
 
 @app.post("/v1/categorize", response_model=Predictions)
 async def categorize(response: Response, products: ProductList):
-    df = products.to_dataframe()
-    predictions = {"categories": list(model.predict(df))}
+    products_df = products.to_dataframe()
+    predictions = {"categories": list(model.predict(products_df))}
     response.headers["X-predictions"] = json.dumps(predictions)
     return predictions

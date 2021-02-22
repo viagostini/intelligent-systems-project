@@ -17,7 +17,7 @@ jobs:
         run: pip install autoflake==1.4
 
       - name: Run autoflake
-        run: autoflake server/*.py --check
+        run: autoflake server/app/*.py server/tests/*.py --check
 
   isort:
     runs-on: ubuntu-20.04

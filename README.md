@@ -15,7 +15,7 @@ The stack used was:
 
 - **Model**: scikit-learn
 - **API**: FastAPI
-- **Metrics Dashboard**: Prometheus + Grafana
+- **(Extra) Metrics Dashboard**: Prometheus + Grafana
 
 ### :zap: Why FastAPI?
 FastAPI is, as its own docs say, "high performance, easy to learn, fast to code,
@@ -25,28 +25,46 @@ advantage of its great integration with Pydantic for schema validation, object
 (de)serialization and FastAPI also auto generates API documentation for us, which
 is pretty cool.
 
-### :memo: How to use it
+### :memo: How to run the training notebook
 First, I will assume that [Docker][4] and [docker-compose][5] are installed, so make
 sure you have it or install it if you don't.
 
-To bring up Jupyter with access to the training notebook, do
+To bring up Jupyter with access to the training notebook, run
 `docker-compose up -f training/docker-compose.yml --build`.
 
-In order to bring up the serving stack, you can do 
+### :memo: How to start the serving API
+Again, I will assume that [Docker][4] and [docker-compose][5] are already installed.
+
+In order to bring up the serving stack, you can run 
 `docker-compose up -f server/docker-compose.yml --build`. This will start three services
 that can be accessed in localhost: a **FastAPI** application on port `5000`,
 **Prometheus** on port `9090` and finally **Grafana** on port `3000`.
-
-For now, as this was an extra, the Prometheus datasource needs to be manually added to
-Grafana and the dashboard must be imported from the file `dashboard.json` located in the
-root folder of the project.
 
 You can now proceed to make POST requests on `localhost:5000/v1/categorize` to receive
 predictions. If you have `curl` installed, you can do
 `curl -XPOST localhost:5000/v1/categorize -d @data/test_products.json`.
 
 Alternatively, you can also test the endpoint through FastAPI's auto generated docs
-available at `localhost:5000/docs`.
+
+### :memo: Monitor the serving API
+First, start the serving stack with the command on the last section if you haven't. Then
+you can access the Grafana dashboard at `localhost:3000`.
+
+For now, as this was an extra feature, the Prometheus datasource needs to be manually
+added to Grafana (use `http://prometheus:9090` as the host) and the dashboard must be
+imported from the file `dashboard.json` located in the root folder of the project.
+
+Note: There is a bug sometimes in the requests/sec gauge that ends up displaying two
+of them for the same route or sometimes it doesn't display the route name.
+
+Some screenshots:
+
+<img src="images/dash2.png" width="1000">
+
+<img src="images/dash3.png" width="1000">
+
+<img src="images/dash4.png" width="1000">
+
 
 
 [1]: https://github.com/elo7/data7_oss/tree/master/elo7-search

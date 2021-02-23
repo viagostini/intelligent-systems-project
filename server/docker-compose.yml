@@ -13,7 +13,6 @@ services:
     volumes:
       - ".:/usr/src/api"
       - "../data:/usr/src/data"
-    env_file: ".env"
   
   prometheus:
     container_name: prometheus

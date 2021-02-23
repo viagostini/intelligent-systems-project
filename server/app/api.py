@@ -3,10 +3,9 @@ import json
 import cloudpickle
 from fastapi import FastAPI, Response
 
+from app.config import environment
 from app.monitoring import instrumentator
-from app.schemas import Environment, Predictions, ProductList
-
-env = Environment()
+from app.schemas import Predictions, ProductList
 
 app = FastAPI()
 
@@ -14,7 +13,7 @@ app = FastAPI()
 instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
 
 
-with open(env.model_path, "rb") as model_file:
+with open(environment.model_path, "rb") as model_file:
     model = cloudpickle.load(model_file)
 
 

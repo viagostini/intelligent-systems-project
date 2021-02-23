@@ -3,16 +3,15 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.api import app
-from app.schemas import Environment, ProductList
-
-env = Environment()
+from app.config import environment
+from app.schemas import ProductList
 
 client = TestClient(app)
 
 
 @pytest.fixture
 def sample_products():
-    return ProductList.parse_file(env.test_products_path)
+    return ProductList.parse_file(environment.test_products_path)
 
 
 def test_productlist_to_dataframe(sample_products: ProductList):

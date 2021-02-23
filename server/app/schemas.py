@@ -1,17 +1,7 @@
-import os
 from typing import List
 
 import pandas as pd
-from dotenv import load_dotenv
-from pydantic import BaseModel, BaseSettings
-
-if os.environ.get("COMPOSE_PROJECT_NAME") is None:
-    load_dotenv(".env.local")
-
-
-class Environment(BaseSettings):
-    model_path: str
-    test_products_path: str
+from pydantic import BaseModel
 
 
 class Product(BaseModel):

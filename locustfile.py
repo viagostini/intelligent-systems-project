@@ -8,9 +8,8 @@ API_ROOT = "http://localhost:5000"
 
 class User(HttpUser):
     """
-    This user performs predictions on a randomized payload with the number of elements
-    in the request following a normal distribution with mean 100 and standard deviation
-    of 20. The data itself is a single product repeated many times.
+    This user performs predictions on a random sized payload.  The data itself is a
+    single product repeated many times.
     """
 
     host = API_ROOT

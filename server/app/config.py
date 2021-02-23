@@ -1,3 +1,9 @@
+"""Environment variables management.
+
+This module defines an object that holds all environment variables so that they can be
+accessed anywhere in the code by importing this object.
+"""
+
 import os
 
 from pydantic import BaseSettings

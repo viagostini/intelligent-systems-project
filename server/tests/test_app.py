@@ -1,10 +1,12 @@
+from http import HTTPStatus
+
 import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
 from app.api import app
 from app.config import environment
-from app.schemas import ProductList
+from app.schemas import Predictions, ProductList
 
 client = TestClient(app)
 
@@ -26,9 +28,11 @@ def test_productlist_to_dataframe(sample_products: ProductList):
 def test_categorize(sample_products: ProductList):
     response = client.post("/v1/categorize", json=sample_products.dict())
 
-    assert response.status_code == 200
-    assert "categories" in response.json()
-    assert len(response.json()["categories"]) == len(sample_products.products)
+    # this raises ValidationError if response model is wrong
+    predictions = Predictions.parse_obj(response.json())
+
+    assert response.status_code == HTTPStatus.OK
+    assert len(predictions.categories) == len(sample_products.products)
 
 
 @pytest.mark.parametrize(
@@ -51,4 +55,4 @@ def test_categorize(sample_products: ProductList):
 def test_categorize_bad_input(bad_data):
     response = client.post("/v1/categorize", json=bad_data)
 
-    assert response.status_code == 422
+    assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY

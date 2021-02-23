@@ -1,3 +1,9 @@
+"""Instrumentation for API monitoring.
+
+This module prepares an instrumentator that allows metrics to be exposed to Prometheus
+and later displayed in a Grafana dashboard.
+"""
+
 from typing import Callable
 
 from prometheus_client import Counter
@@ -39,8 +45,6 @@ instrumentator.add(
     )
 )
 
-instrumentator.add(metrics.latency(buckets=(1, 2, 3)))
-
 instrumentator.add(
     metrics.requests(
         should_include_handler=True,
@@ -50,3 +54,5 @@ instrumentator.add(
 )
 
 instrumentator.add(product_classifier_output())
+
+instrumentator.add(metrics.latency(buckets=(1, 2, 3)))

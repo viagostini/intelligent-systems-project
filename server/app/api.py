@@ -1,3 +1,9 @@
+"""FastAPI app definition.
+
+This module defines the app with a single route for serving predictions through the
+saved categorization model.
+"""
+
 import json
 
 import cloudpickle
@@ -21,5 +27,8 @@ with open(environment.model_path, "rb") as model_file:
 def categorize(response: Response, products: ProductList):
     products_df = products.dataframe()
     predictions = {"categories": list(model.predict(products_df))}
+
+    # make predictions available to instrumentation
     response.headers["X-predictions"] = json.dumps(predictions)
+
     return predictions

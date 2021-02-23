@@ -1,8 +1,7 @@
 import json
-from random import sample
+from random import randint, sample
 
 from locust import HttpUser, between, task
-from numpy.random import normal
 
 API_ROOT = "http://localhost:5000"
 
@@ -20,7 +19,7 @@ class User(HttpUser):
     def on_start(self):
         with open("data/test_products.json", "r") as json_file:
             raw_data = json.load(json_file)["products"]
-            self.data = {"products": sample(raw_data, 1) * int(normal(100, 20))}
+            self.data = {"products": sample(raw_data, 1) * randint(1, 1000)}
 
     @task
     def get_url(self):

@@ -63,6 +63,8 @@ Some screenshots:
 
 <img src="images/dash3.png" width="1000">
 
+<img src="images/dash5.png" width="1000">
+
 <img src="images/dash4.png" width="1000">
 
 

@@ -39,6 +39,7 @@ def test_categorize(sample_products: ProductList):
     "bad_data",
     [
         pytest.param({}, id="Empty data"),
+        pytest.param({"products": []}, id="Empty products list"),
         pytest.param(
             {"products": [{"title": "Painel de Festa Baby Shark 5"}]},
             id="Missing Feature",

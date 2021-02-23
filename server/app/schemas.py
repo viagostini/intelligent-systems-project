@@ -7,10 +7,8 @@ Using these schemas with FastAPI also allows for auto generated docs to display
 information about them in the `/docs` route.
 """
 
-from typing import List
-
 import pandas as pd
-from pydantic import BaseModel
+from pydantic import BaseModel, conlist
 
 
 class Product(BaseModel):
@@ -19,11 +17,11 @@ class Product(BaseModel):
 
 
 class ProductList(BaseModel):
-    products: List[Product]
+    products: conlist(Product, min_items=1)
 
     def dataframe(self) -> pd.DataFrame:
         return pd.DataFrame(self.dict()["products"])
 
 
 class Predictions(BaseModel):
-    categories: List[str]
+    categories: conlist(str, min_items=1)
